@@ -1,0 +1,1 @@
+/home/miyazono/workspace/mikanos/kernel/frame_buffer_config.hpp
