@@ -10,7 +10,7 @@ typedef int32_t Elf64_Sword;
 typedef uint64_t Elf64_Xword;
 typedef int64_t Elf64_Sxword;
 
-#define EI_INDENT
+#define EI_INDENT 16
 
 typedef struct {
   unsigned char e_indent[EI_INDENT];
@@ -27,7 +27,7 @@ typedef struct {
   Elf64_Half e_shentsize;
   Elf64_Half e_shnum;
   Elf64_Half e_shstrndx;
-}; Elf64_Efdr;
+} Elf64_Ehdr;
 
 typedef struct {
   Elf64_Word p_type;
@@ -40,27 +40,27 @@ typedef struct {
   Elf64_Xword p_align;
 } Elf64_Phdr;
 
-#define PT_NULL 0
-#define PT_LOAD 1
-#define PT_DYNAMIC 3
-#define PT_INTERP 4
-#define PT_NOTE 4
-#define PT_SHLIB 5
-#define PT_PHDR 6
-#define PT_TLS 7
+#define PT_NULL     0
+#define PT_LOAD     1
+#define PT_DYNAMIC  2
+#define PT_INTERP   3
+#define PT_NOTE     4
+#define PT_SHLIB    5
+#define PT_PHDR     6
+#define PT_TLS      7
 
 typedef struct {
-  ELF64_Sxword d_tag;
+  Elf64_Sxword d_tag;
   union {
     Elf64_Xword d_val;
     Elf64_Addr d_ptr;
     } d_un;
 } Elf64_Dyn;
 
-#define DT_NULL 0
-#define DT_RELA 7
-#define DT_RELASZ 8
-#define DT_RELAENT 9
+#define DT_NULL     0
+#define DT_RELA     7
+#define DT_RELASZ   8
+#define DT_RELAENT  9
 
 typedef struct {
   Elf64_Addr r_offset;
@@ -70,6 +70,7 @@ typedef struct {
 
 #define ELF64_R_SYM(i) ((i)>>32)
 #define ELF64_R_TYPE(i) ((i)&0xfffffffL);
+#define ELF64_R_INFO(s,t) (((s)<<32)+((t)&0xfffffffL))
 
 #define R_X86_64_RELATIVE 8
 
