@@ -1,9 +1,12 @@
 #include <cstdint>
 #include <cstddef>
+#include <cstdio>
 
 #include "frame_buffer_config.hpp"
 #include "graphics.hpp"
 #include "font.hpp"
+#include "console.hpp"
+
 
 void* operator new(size_t size, void* buf){
 	return buf;
@@ -29,24 +32,16 @@ extern "C" void KernelMain(const FrameBufferConfig& frame_buffer_config){
 			BGRResv8BitPerColorPixelWriter{frame_buffer_config};
 	default:
 		break;
+		
 	}
 
-	for (int x = 0; x < frame_buffer_config.horizontal_resolution; ++x){
-		for (int y = 0; y < frame_buffer_config.vertical_resolution; ++y){
-			pixel_writer->Write(x,y,{255,255,255});
-		}
+	Console console{*pixel_writer, {0,0,0}, {255,255,255}};
+	
+	char buf[128];
+	for(int i = 0; i < 27; ++i){
+		sprintf(buf, "line %d\n", i);
+		console.PutString(buf);
 	}
-	for (int x = 0; x < 200; ++x){
-		for (int y = 0; y < 100; ++y){
-			pixel_writer->Write(x,y,{0,255,0});
-		}
-	}
-
-	int i = 0;
-	for (char c = '!'; c <= '~'; ++c, ++i){
-		WriteAscii(*pixel_writer, 8 * i, 50, c, {0, 0, 0});
-	}
-
 	while (1) __asm__("hlt");
 }
 
